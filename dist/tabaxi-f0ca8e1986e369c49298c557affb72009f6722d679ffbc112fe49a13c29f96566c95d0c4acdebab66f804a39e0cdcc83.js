@@ -623,12 +623,12 @@ function __wbg_get_imports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper2180 = function(arg0, arg1, arg2) {
-        const ret = makeClosure(arg0, arg1, 152, __wbg_adapter_20);
+    imports.wbg.__wbindgen_closure_wrapper2357 = function(arg0, arg1, arg2) {
+        const ret = makeClosure(arg0, arg1, 187, __wbg_adapter_20);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper3074 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 228, __wbg_adapter_23);
+    imports.wbg.__wbindgen_closure_wrapper3280 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 263, __wbg_adapter_23);
         return addHeapObject(ret);
     };
 
@@ -670,7 +670,7 @@ async function __wbg_init(input) {
     if (wasm !== undefined) return wasm;
 
     if (typeof input === 'undefined') {
-        input = new URL('tabaxi-40ee334426332e66abef9fd1dbe6bd45e00e364f517bde74ab24713a7eacfb5e2df1d38bb46ad3f9d555c7f7260376ee_bg.wasm', import.meta.url);
+        input = new URL('tabaxi-f0ca8e1986e369c49298c557affb72009f6722d679ffbc112fe49a13c29f96566c95d0c4acdebab66f804a39e0cdcc83_bg.wasm', import.meta.url);
     }
     const imports = __wbg_get_imports();
 
