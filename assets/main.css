@@ -2,3 +2,12 @@ table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
+
+td, th {
+    /* border: 1px solid #ddd; */
+    /* padding: 8px; */
+    text-align: center;
+    /* Fixing width and height for each cell */
+    width: 30px;
+    height: 30px;
+}
