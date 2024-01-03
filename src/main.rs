@@ -1,21 +1,5 @@
 use dioxus::prelude::*;
 
-// mod img_path {
-//     pub const BLACK:  &str = "cmicons/black.png";
-//     pub const CYAN:   &str = "cmicons/cyan.png";
-//     pub const RED:    &str = "cmicons/red.png";
-//     pub const WHITE:  &str = "cmicons/white.png";
-//     pub const GRAY:   &str = "cmicons/gray.png";
-//     pub const ORANGE: &str = "cmicons/orange.png";
-//     pub const YELLOW: &str = "cmicons/yellow.png";
-//     pub const PINK:   &str = "cmicons/pink.png";
-//     pub const ROSE:   &str = "cmicons/rose.png";
-//     pub const BROWN:  &str = "cmicons/brown.png";
-//     pub const LIME:   &str = "cmicons/lime.png";
-//     pub const PURPLE: &str = "cmicons/purple.png";
-//     pub const GREEN:  &str = "cmicons/green.png";
-// }
-//
 
 const CREWMATES: usize = 13;
 
