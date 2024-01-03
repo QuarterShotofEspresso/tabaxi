@@ -1,206 +1,143 @@
-use yew::prelude::*;
-
-// let myValues: String = "ROYGBIV".to_string();
-const SAMPLE: &str = "ROYGBIV";
-const MATRIX_WIDTH:  usize = 1 + 1 + 1 + 7;
-const MATRIX_HEIGHT: usize = 1 + 7;
-
-enum Vitality {
-    ALIVE,
-    DEAD,
-}
-
-enum PlayerGroup {
-    IMPOSTER,
-    CREWMATE,
-}
-
-enum CellType {
-    GroupCell( PlayerGroup ),
-    TextCell( String ),
-    VitalityCell( Vitality ),
-}
-
-impl CellType {
-
-    // fn toggle_group(&self) -> CellType {
-    //     match self.group {
-    //         PlayerGroup::IMPOSTER => CellType::GroupCell { group: PlayerGroup::CREWMATE },
-    //         PlayerGroup::CREWMATE => CellType::GroupCell { group: PlayerGroup::IMPOSTER },
-    //         _ => todo!("Need to use PlayerGroup Cell!"),
-    //     }
-    // }
-    //
-    // fn toggle_vitality(&self) -> CellType {
-    //     match self.state {
-    //         Vitality::DEAD => CellType::VitalityCell { state: Vitality::ALIVE },
-    //         Vitality::ALIVE => CellType::VitalityCell { state: Vitality::DEAD },
-    //         _ => todo!("Need to use VitalityCell!"),
-    //     }
-    // }
-
-    //NOTE: We will consume this value and create a new instance
-    fn toggle(self) -> CellType {
-
-        match self {
-            CellType::GroupCell(PlayerGroup::IMPOSTER) => CellType::GroupCell(PlayerGroup::CREWMATE),
-            CellType::GroupCell(PlayerGroup::CREWMATE) => CellType::GroupCell(PlayerGroup::IMPOSTER),
-            CellType::VitalityCell(Vitality::ALIVE) => CellType::VitalityCell(Vitality::DEAD),
-            CellType::VitalityCell(Vitality::DEAD) => CellType::VitalityCell(Vitality::ALIVE),
-            _ => todo!("Need to implement a panic!"),
-        }
-
-    }
-
-}
-
-// struct Cell {
-//     content: Option<String>,
-//     cell_type: CellType,
-//
-// }
-//
-// struct Implicatory {
-//     content: Option<String>,
-// }
-//
-// struct Liveness {
-//     content: Option<String>,
-// }
-//
-// struct Identifier {
-//     content: Option<String>,
-// }
-//
-// struct Innocence {
-//     content: Option<String>,
-// }
-//
-//
-// trait ClickBehavior {
-//     fn click();
-// }
-
-struct AccusationMatrix {
-    matrix: [[Cell; MATRIX_WIDTH]; MATRIX_HEIGHT],
-}
-
-impl AccusationMatrix {
-
-    // fn new() -> AccusationMatrix {
-    //
-    // }
-
-    // #[function_component(AccMatrix)]
-    // fn display(&self) -> Html {
-    // }
-}
-
-// enum PlayerState {
-//     KILL,
-//     LIVE,
-// }
-
-// Cell in the AccusationMatrix
-struct Cell<T> {
-    content: Option<String>,
-    cell_type: Option<T>,
-}
+use dioxus::prelude::*;
 
 
-impl Cell {
-
-    fn display(self) -> Html {
-        html! {
-            <td>{self.content.unwrap()}</td>
-        }
-    }
-
-}
-
-// fn populate_accusees() {
-//     
-// }
-//
-//
-// fn populate_accusers() -> Result<bool, Err>{
-//
-// }
-
-
-#[function_component(Table)]
-fn table() -> Html {
-    let test_header: String = "   ROYGBIV".to_string();
-    let test_data01: String = "  R       ".to_string();
-    let test_data02: String = "  O       ".to_string();
-    let test_data03: String = "  Y       ".to_string();
-    let test_data04: String = "  G       ".to_string();
-    let test_data05: String = "  B       ".to_string();
-    let test_data06: String = "  I       ".to_string();
-    let test_data07: String = "  V       ".to_string();
-
-    html! {
-    <>
-    <table>
-    <tr>
-    {
-        for test_header.to_string()
-            .chars()
-            .map(|c| html!{<th>{c}</th>})
-    }
-    </tr>
-
-    <tr>
-    {
-        for test_data01.to_string()
-            .chars()
-            .map(|c| html!{<td>{c}</td>})
-    }
-    </tr>
-    </table>
-    </>
-        // <>
-        // <table>
-        // <tr>
-        // <th>{"D"}</th>
-        // <th>{"I?"}</th>
-        // <th>{"C"}</th>
-        // <th>{"R"}</th>
-        // <th>{"O"}</th>
-        // <th>{"Y"}</th>
-        // <th>{"G"}</th>
-        // <th>{"B"}</th>
-        // <th>{"I"}</th>
-        // <th>{"V"}</th>
-        // </tr>
-        //
-        // <tr>
-        // <td>{"D"}</td>
-        // <td>{"I?"}</td>
-        // <td>{"C"}</td>
-        // <td>{"R"}</td>
-        // <td>{"O"}</td>
-        // <td>{"Y"}</td>
-        // <td>{"G"}</td>
-        // <td>{"B"}</td>
-        // <td>{"I"}</td>
-        // <td>{"V"}</td>
-        // </tr>
-        // </table>
-        // </>
-    }
-}
-
-#[function_component(App)]
-fn app() -> Html {
-    html! {
-        <>
-        <h1>{"Hello World!"}</h1>
-        <Table />
-        </>
-    }
-}
 
 fn main() {
-    yew::Renderer::<App>::new().render();
+    dioxus_web::launch(app);
+}
+
+
+fn spacer(cx: Scope) -> Element {
+    render! {
+        div {
+            border: "1px solid black",
+            display: "flex",
+            justify_content: "center",
+            align_items: "center",
+            height: "250px",
+            "spacer"
+        },
+    }
+}
+
+fn intro(cx: Scope) -> Element {
+
+    render! {
+        div {
+            border: "1px solid black",
+            display: "flex",
+            justify_content: "center",
+            align_items: "center",
+            text_align: "center",
+            "TABAXI"
+        },
+    }
+
+}
+
+
+fn im_row(cx: Scope<ImageCellProps>) -> Element {
+    render! {
+        tr {
+            // border: "1px solid black",
+            // border_collapse: "collapse",
+            (0..15).map(|i| match i {
+                    // 0 => rsx!{ im_image_cell { id: &i } },
+                    0 => rsx!{ im_image_cell { id: cx.props.id } },
+                    _ => rsx!{ im_todo_cell {} }
+                })
+                // rsx!{ td {"{i}"} })
+        }
+    }
+}
+
+fn im_header(cx: Scope) -> Element {
+    render! {
+        tr {
+            // border: "1px solid black",
+            // border_collapse: "collapse",
+            (0..15).map(|i| {
+                rsx!{ 
+                    th {
+                        // border: "1px solid black",
+                        // border_collapse: "collapse",
+                        "{i}"
+                    } 
+                }
+            })
+        }
+    }
+}
+
+
+#[derive(Props, PartialEq)]
+struct ImageCellProps {
+    id: i32 
+}
+
+// #[derive(Props, PartialEq)]
+// struct ImageCellProps<'a> {
+//     id: &'a i32 
+// }
+
+fn im_image_cell(cx: Scope<ImageCellProps>) -> Element {
+    render! {
+        td {
+            // border: "1px solid black",
+            // border_collapse: "collapse",
+            "{cx.props.id}"
+        }
+    }
+}
+
+// fn im_image_cell<'a>(cx: Scope<'a, ImageCellProps<'a>>) -> Element {
+//     render! {
+//         "{cx.props.id}"
+//     }
+// }
+
+fn im_todo_cell(cx: Scope) -> Element {
+    render! {
+        td {
+            // border: "1px solid black",
+            // border_collapse: "collapse",
+            ""
+        }
+    }
+}
+
+
+fn im(cx:Scope) -> Element {
+    render! {
+        div {
+            border: "1px solid black",
+            display: "flex",
+            justify_content: "center",
+            align_items: "center",
+
+            table {
+                // border: "1px solid black",
+                // border_collapse: "collapse",
+                im_header(cx),
+                (1..15).map(|i| rsx!{im_row{ id: i }} )
+                // im_row,
+                // im_row,
+                // im_row,
+                // im_row,
+                // im_row,
+                // im_row,
+                // im_row,
+                // im_row,
+            }
+        }
+    }
+}
+
+// create a component that renders a div with the text "Hello, world!"
+fn app(cx: Scope) -> Element {
+    render! {
+        spacer(cx),
+        intro(cx),
+        im(cx),
+    }
 }
