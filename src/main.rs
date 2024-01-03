@@ -1,5 +1,36 @@
 use dioxus::prelude::*;
 
+// mod img_path {
+//     pub const BLACK:  &str = "cmicons/black.png";
+//     pub const CYAN:   &str = "cmicons/cyan.png";
+//     pub const RED:    &str = "cmicons/red.png";
+//     pub const WHITE:  &str = "cmicons/white.png";
+//     pub const GRAY:   &str = "cmicons/gray.png";
+//     pub const ORANGE: &str = "cmicons/orange.png";
+//     pub const YELLOW: &str = "cmicons/yellow.png";
+//     pub const PINK:   &str = "cmicons/pink.png";
+//     pub const ROSE:   &str = "cmicons/rose.png";
+//     pub const BROWN:  &str = "cmicons/brown.png";
+//     pub const LIME:   &str = "cmicons/lime.png";
+//     pub const PURPLE: &str = "cmicons/purple.png";
+//     pub const GREEN:  &str = "cmicons/green.png";
+// }
+
+const IMG_PATHS: [&'static str; 13] = [
+    "cmicons/black.png",
+    "cmicons/cyan.png",
+    "cmicons/red.png",
+    "cmicons/white.png",
+    "cmicons/gray.png",
+    "cmicons/orange.png",
+    "cmicons/yellow.png",
+    "cmicons/pink.png",
+    "cmicons/blue.png",
+    "cmicons/brown.png",
+    "cmicons/lime.png",
+    "cmicons/purple.png",
+    "cmicons/green.png",
+];
 
 
 fn main() {
@@ -14,7 +45,7 @@ fn spacer(cx: Scope) -> Element {
             display: "flex",
             justify_content: "center",
             align_items: "center",
-            height: "250px",
+            height: "75px",
             "spacer"
         },
     }
@@ -24,12 +55,14 @@ fn intro(cx: Scope) -> Element {
 
     render! {
         div {
+            font_family: "Luminari",
+            font_size: "50px",
             border: "1px solid black",
             display: "flex",
             justify_content: "center",
             align_items: "center",
             text_align: "center",
-            "TABAXI"
+            "Tabaxi"
         },
     }
 
@@ -39,14 +72,10 @@ fn intro(cx: Scope) -> Element {
 fn im_row(cx: Scope<ImageCellProps>) -> Element {
     render! {
         tr {
-            // border: "1px solid black",
-            // border_collapse: "collapse",
-            (0..15).map(|i| match i {
-                    // 0 => rsx!{ im_image_cell { id: &i } },
+            (0..13).map(|i| match i {
                     0 => rsx!{ im_image_cell { id: cx.props.id } },
                     _ => rsx!{ im_todo_cell {} }
                 })
-                // rsx!{ td {"{i}"} })
         }
     }
 }
@@ -54,17 +83,26 @@ fn im_row(cx: Scope<ImageCellProps>) -> Element {
 fn im_header(cx: Scope) -> Element {
     render! {
         tr {
-            // border: "1px solid black",
-            // border_collapse: "collapse",
-            (0..15).map(|i| {
-                rsx!{ 
-                    th {
-                        // border: "1px solid black",
-                        // border_collapse: "collapse",
-                        "{i}"
+            // (0..15).map( |i| {rsx!{ th { "{i}" } }} )
+            IMG_PATHS.iter().map( |&path| rsx!{
+                th { 
+                    img { 
+                        width: "20px",
+                        height: "22px",
+                        src: path, 
                     } 
-                }
+                } 
             })
+            // (0..15).map( |_| rsx!{
+            //     th { 
+            //         img { 
+            //             width: "20px",
+            //             height: "22px",
+            //             src: img_path::CYAN, 
+            //         } 
+            //     } 
+            // } )
+            // image: "cmicons/cyan.png"
         }
     }
 }
@@ -83,9 +121,8 @@ struct ImageCellProps {
 fn im_image_cell(cx: Scope<ImageCellProps>) -> Element {
     render! {
         td {
-            // border: "1px solid black",
-            // border_collapse: "collapse",
             "{cx.props.id}"
+            // image: "cmicons/cyan.png"
         }
     }
 }
@@ -98,11 +135,7 @@ fn im_image_cell(cx: Scope<ImageCellProps>) -> Element {
 
 fn im_todo_cell(cx: Scope) -> Element {
     render! {
-        td {
-            // border: "1px solid black",
-            // border_collapse: "collapse",
-            ""
-        }
+        td { "" }
     }
 }
 
@@ -116,18 +149,8 @@ fn im(cx:Scope) -> Element {
             align_items: "center",
 
             table {
-                // border: "1px solid black",
-                // border_collapse: "collapse",
                 im_header(cx),
                 (1..15).map(|i| rsx!{im_row{ id: i }} )
-                // im_row,
-                // im_row,
-                // im_row,
-                // im_row,
-                // im_row,
-                // im_row,
-                // im_row,
-                // im_row,
             }
         }
     }
@@ -138,6 +161,7 @@ fn app(cx: Scope) -> Element {
     render! {
         spacer(cx),
         intro(cx),
+        spacer(cx),
         im(cx),
     }
 }
