@@ -1,21 +1,21 @@
 [application]
 
 # App (Project) Name
-# name = "{{project-name}}"
+name = "{{Tabaxi}}"
 
 # Dioxus App Default Platform
 # desktop, web
 # {% if platform == "desktop" %}
 # default_platform = "desktop"
 # {% else %}
-# default_platform = "web"
+default_platform = "web"
 # {% endif %}
 
 # `build` & `serve` dist path
-# out_dir = "dist"
+out_dir = "dist"
 
 # resource (public) file folder
-# asset_dir = "public"
+asset_dir = "assets"
 
 [web.app]
 
@@ -28,7 +28,7 @@
 # reload_html = true
 
 # which files or dirs will be watcher monitoring
-# watch_path = ["src", "public"]
+watch_path = ["src", "assets"]
 
 # include `assets` in web platform
 [web.resource]
@@ -37,7 +37,7 @@
 # {% if styling == "Tailwind" %}
 # style = ["tailwind.css"]
 # {% else %}
-style = ["main.css"]
+style = ["./main.css"]
 # {% endif %}
 
 # Javascript code file
@@ -45,6 +45,7 @@ style = ["main.css"]
 
 [web.resource.dev]
 
+style = ["./main.css"]
 # Javascript code file
 # serve: [dev-server] only
 # script = []
