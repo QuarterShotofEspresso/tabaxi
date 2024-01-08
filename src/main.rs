@@ -118,8 +118,26 @@ struct ImageCellProps<'a> {
 }
 
 fn crewmate_cell<'a>(cx: Scope<'a, ImageCellProps<'a>>) -> Element {
+    let liveness = use_state(cx, || Vitality::ALIVE);
+    let background_color = use_state(cx, || "white".to_string());
+
     render! {
-        td { img { src: cx.props.path } }
+        match liveness.get() {
+            Vitality::ALIVE => rsx! ( td {
+                onmouseenter: move |_| background_color.set("lightgray".to_string()),
+                onmouseleave: move |_| background_color.set("white".to_string()),
+                onclick: move |_| liveness.set(tick_vitality(liveness.get())),
+                background_color: "{background_color}",
+                img { src: cx.props.path },
+            }),
+            Vitality::DEAD => rsx! ( td {
+                onmouseenter: move |_| background_color.set("lightgray".to_string()),
+                onmouseleave: move |_| background_color.set("gray".to_string()),
+                onclick: move |_| liveness.set(tick_vitality(liveness.get())),
+                background_color: "{background_color}",
+                img { src: cx.props.path },
+            }),
+        }
     }
 }
 
