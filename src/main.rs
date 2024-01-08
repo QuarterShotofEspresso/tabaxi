@@ -1,7 +1,8 @@
-use dioxus::prelude::*;
-
+use dioxus::{prelude::*};
 
 const CREWMATES: usize = 13;
+const TOTAL_COLUMNS: usize = CREWMATES + 1;
+const TOTAL_ROWS_WO_ACCUSEE:    usize = CREWMATES + 1;
 
 const IMG_PATHS: [&'static str; CREWMATES] = [
     "cmicons/black.png",
@@ -18,6 +19,34 @@ const IMG_PATHS: [&'static str; CREWMATES] = [
     "cmicons/purple.png",
     "cmicons/green.png",
 ];
+
+enum PlayerGroup {
+    IMPOSTER,
+    CREWMATE,
+    UNKNOWN,
+}
+
+fn tick_player_group(group: &PlayerGroup) -> PlayerGroup {
+    match group {
+        PlayerGroup::UNKNOWN => PlayerGroup::IMPOSTER,
+        PlayerGroup::IMPOSTER => PlayerGroup::CREWMATE,
+        PlayerGroup::CREWMATE => PlayerGroup::UNKNOWN,
+    }
+}
+
+
+
+enum Vitality {
+    ALIVE,
+    DEAD,
+}
+
+fn tick_vitality(state: &Vitality) -> Vitality {
+    match state {
+        Vitality::ALIVE => Vitality::DEAD,
+        Vitality::DEAD  => Vitality::ALIVE,
+    }
+}
 
 
 fn main() {
@@ -52,89 +81,85 @@ fn intro(cx: Scope) -> Element {
             "Tabaxi"
         },
     }
-
-}
-
-
-fn im_row(cx: Scope<ImageCellProps>) -> Element {
-    render! {
-        tr {
-            // (0..13).map(|i| match i {
-            //         0 => rsx!{ im_image_cell { id: cx.props.id } },
-            //         _ => rsx!{ im_todo_cell {} }
-            //     })
-            (0..CREWMATES).map(|i| match i {
-                0 => rsx! { im_image_cell { id: cx.props.id }},
-                _ => rsx! { im_todo_cell {} }
-            })
-            // IMG_PATHS.iter().map( |&path| rsx! {
-            //     td {
-            //         img {
-            //             width: "20px",
-            //             height: "22px",
-            //             src: path,
-            //         }
-            //     }
-            // })
-        }
-    }
-}
-
-fn im_header(cx: Scope) -> Element {
-    render! {
-        tr {
-            IMG_PATHS.iter().map( |&path| rsx!{
-                th { 
-                    img { 
-                        width: "20px",
-                        height: "22px",
-                        src: path, 
-                    } 
-                } 
-            })
-        }
-    }
 }
 
 
 #[derive(Props, PartialEq)]
-struct ImageCellProps {
-    id: usize 
+struct AccuserRowProps {
+    row_idx: usize
 }
 
-// #[derive(Props, PartialEq)]
-// struct ImageCellProps<'a> {
-//     id: &'a i32 
-// }
 
-fn im_image_cell(cx: Scope<ImageCellProps>) -> Element {
+fn accuser_row(cx: Scope<AccuserRowProps>) -> Element {
     render! {
-        td {
-            // "{cx.props.id}"
-            img {
-                width: "20px",
-                height: "22px",
-                src: IMG_PATHS[cx.props.id]
-            }
-            // image: "cmicons/cyan.png"
+        tr {
+            (0..TOTAL_COLUMNS).map(|i| match i {
+                0 => rsx! { crewmate_cell { path: IMG_PATHS[cx.props.row_idx - 1] }},
+                _ => rsx! { implicatory_cell {} }
+            })
         }
     }
 }
 
-// fn im_image_cell<'a>(cx: Scope<'a, ImageCellProps<'a>>) -> Element {
-//     render! {
-//         "{cx.props.id}"
-//     }
-// }
+fn accusee_row(cx: Scope) -> Element {
+    render! {
+        tr {
+            (0..TOTAL_COLUMNS).map(|i| match i {
+                0 => rsx! { empty_cell {} },
+                _ => rsx! { crewmate_cell { path: IMG_PATHS[i - 1] } },
+            })
+        }
+    }
+}
 
-fn im_todo_cell(cx: Scope) -> Element {
+#[derive(Props, PartialEq)]
+struct ImageCellProps<'a> {
+    path: &'a str 
+}
+
+fn crewmate_cell<'a>(cx: Scope<'a, ImageCellProps<'a>>) -> Element {
+    render! {
+        td { img { src: cx.props.path } }
+    }
+}
+
+fn empty_cell(cx: Scope) -> Element {
     render! {
         td { "" }
     }
 }
 
 
-fn im(cx:Scope) -> Element {
+fn implicatory_cell(cx: Scope) -> Element {
+    let curr_group = use_state(cx, || PlayerGroup::UNKNOWN);
+    let background_color = use_state(cx, || "white".to_string());
+
+    render! {
+        match curr_group.get() {
+            PlayerGroup::UNKNOWN => rsx! ( td {
+                onmouseenter: move |_| background_color.set("pink".to_string()),
+                onmouseleave: move |_| background_color.set("white".to_string()),
+                onclick: move |_| curr_group.set(tick_player_group(curr_group.get())),
+                background_color: "{background_color}"
+            }),
+            PlayerGroup::IMPOSTER => rsx! ( td {
+                onmouseenter: move |_| background_color.set("cyan".to_string()),
+                onmouseleave: move |_| background_color.set("red".to_string()),
+                onclick: move |_| curr_group.set(tick_player_group(curr_group.get())),
+                background_color: "{background_color}"
+            }),
+            PlayerGroup::CREWMATE => rsx! ( td {
+                onmouseenter: move |_| background_color.set("gray".to_string()),
+                onmouseleave: move |_| background_color.set("blue".to_string()),
+                onclick: move |_| curr_group.set(tick_player_group(curr_group.get())),
+                background_color: "{background_color}"
+            }),
+        }
+    }
+}
+
+
+fn implication_matrix(cx:Scope) -> Element {
     render! {
         div {
             border: "1px solid black",
@@ -143,8 +168,8 @@ fn im(cx:Scope) -> Element {
             align_items: "center",
 
             table {
-                im_header(cx),
-                (0..CREWMATES).map( |i| rsx!{im_row{ id: i }} )
+                accusee_row(cx),
+                (1..TOTAL_ROWS_WO_ACCUSEE).map( |i| rsx!{accuser_row{ row_idx: i }} )
             }
         }
     }
@@ -156,6 +181,6 @@ fn app(cx: Scope) -> Element {
         spacer(cx),
         intro(cx),
         spacer(cx),
-        im(cx),
+        implication_matrix(cx),
     }
 }
