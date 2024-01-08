@@ -131,8 +131,8 @@ fn crewmate_cell<'a>(cx: Scope<'a, ImageCellProps<'a>>) -> Element {
                 img { src: cx.props.path },
             }),
             Vitality::DEAD => rsx! ( td {
-                onmouseenter: move |_| background_color.set("lightgray".to_string()),
-                onmouseleave: move |_| background_color.set("gray".to_string()),
+                onmouseenter: move |_| background_color.set("gray".to_string()),
+                onmouseleave: move |_| background_color.set("darkgray".to_string()),
                 onclick: move |_| liveness.set(tick_vitality(liveness.get())),
                 background_color: "{background_color}",
                 img { src: cx.props.path },
@@ -155,20 +155,20 @@ fn implicatory_cell(cx: Scope) -> Element {
     render! {
         match curr_group.get() {
             PlayerGroup::UNKNOWN => rsx! ( td {
-                onmouseenter: move |_| background_color.set("pink".to_string()),
+                onmouseenter: move |_| background_color.set("lightgray".to_string()),
                 onmouseleave: move |_| background_color.set("white".to_string()),
                 onclick: move |_| curr_group.set(tick_player_group(curr_group.get())),
                 background_color: "{background_color}"
             }),
             PlayerGroup::IMPOSTER => rsx! ( td {
-                onmouseenter: move |_| background_color.set("cyan".to_string()),
-                onmouseleave: move |_| background_color.set("red".to_string()),
+                onmouseenter: move |_| background_color.set("#d13e24".to_string()),
+                onmouseleave: move |_| background_color.set("tomato".to_string()),
                 onclick: move |_| curr_group.set(tick_player_group(curr_group.get())),
                 background_color: "{background_color}"
             }),
             PlayerGroup::CREWMATE => rsx! ( td {
-                onmouseenter: move |_| background_color.set("gray".to_string()),
-                onmouseleave: move |_| background_color.set("blue".to_string()),
+                onmouseenter: move |_| background_color.set("#2190bf".to_string()),
+                onmouseleave: move |_| background_color.set("#28b2ed".to_string()),
                 onclick: move |_| curr_group.set(tick_player_group(curr_group.get())),
                 background_color: "{background_color}"
             }),
